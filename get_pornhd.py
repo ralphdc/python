@@ -33,6 +33,30 @@ def formatFloat(num):
     return '{:.2f}'.format(num)
 
 
+def download_video(fpath, furl):
+  print("begin to download this video---------------------------------->")
+  print("vedio file save path: %s" % fpath)
+  print("vedio download url: %s" % furl)
+  request_video = requests.get(furl, stream=True)
+  length = float(request_video.headers['content-length'])
+  with open(fpath, 'wb') as f:
+    count = 0
+    count_tmp = 0
+    time1 = time.time()
+    for chunk in request_video.iter_content(chunk_size = 512):
+      if chunk:
+        f.write(chunk)
+        count += len(chunk)
+        if time.time() - time1 > 2:
+          p = count / length * 100
+          speed = (count - count_tmp) / 1024 / 1024 / 2
+          count_tmp = count
+          print(fpath + ': ' + formatFloat(p) + '%' + ' Speed: ' + formatFloat(speed) + 'M/S')
+          time1 = time.time()
+  print("------------------------------------->video download finished!") 
+
+
+
 def main():
   if not os.path.isdir(download_path):
     os.makedirs(download_path)
@@ -73,11 +97,8 @@ def main():
       sys.exit(1)
 
     post_headers["referer"] = video_url
-
     video_name_list = video_url.split('/')
-
     video_name = video_name_list[-1]
-
     post_url = video_url_info % vid 
     r = requests.post(post_url, data={'_csrf-frontend':csrf_token, 'domain': 'www.pornhd.com', '_jwt':'' }, headers=post_headers)
    # print("----------------------------------------------------------------------")
@@ -90,28 +111,8 @@ def main():
       if res_dict.get('status') == 'success':
         video_download_url = res_dict.get('result') or None 
         if video_download_url:
-          print("video_url: %s" % video_url)
-          print("video_download_url: %s" % video_download_url)
-          print("begin to download this video---------------------------------->")
-
           f_name = "%s/%s.mp4" % (download_path, video_name)
-          request_video = requests.get(video_download_url, stream=True)
-          length = float(request_video.headers['content-length'])
-          with open(f_name, 'wb') as f:
-            count = 0
-            count_tmp = 0
-            time1 = time.time()
-            for chunk in request_video.iter_content(chunk_size = 512):
-              if chunk:
-                f.write(chunk)
-                count += len(chunk)
-                if time.time() - time1 > 2:
-                  p = count / length * 100
-                  speed = (count - count_tmp) / 1024 / 1024 / 2
-                  count_tmp = count
-                  print(f_name + ': ' + formatFloat(p) + '%' + ' Speed: ' + formatFloat(speed) + 'M/S')
-                  time1 = time.time()
-          print("------------------------------------->video download finished!")
+          download_video(f_name, video_download_url)
         else:
           print("[Error] result field is empty!")
           sys.exit(1)
