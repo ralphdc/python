@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
 
+#这个脚本用来下载pornhd网站的小电影，只下载720分辨率！
+
 import requests
 import sys 
 import re 
