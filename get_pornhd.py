@@ -47,9 +47,9 @@ def main():
       print('[Error] requests send get request error!')
 
     html_content = html_res.text
-    location = html_res.headers
-    print(location)
     csrf_token = re.search('\w{0,}\=\=', html_content).group()
+    video_name = re.search('<meta name="og:url"(.*?)">', html_content).group()
+    print(video_name)
 
     if csrf_token:
       header_path = "/videos/get-download-url?videoId=%d&resolution=720" % vid 
