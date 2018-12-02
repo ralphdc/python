@@ -45,8 +45,10 @@ def main():
       html_res = requests.get(v_url)
     except Exception as e:
       print('[Error] requests send get request error!')
+
     html_content = html_res.text
     location = html_res.headers
+    print(location)
     csrf_token = re.search('\w{0,}\=\=', html_content).group()
 
     if csrf_token:
