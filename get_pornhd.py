@@ -48,38 +48,42 @@ def main():
 
     html_content = html_res.text
     csrf_token = re.search('\w{0,}\=\=', html_content).group()
-    video_name = re.search('<meta name="og:url"(.*?)">', html_content).group()
-    print(video_name)
+    meta_name = re.search('<meta name="og:url"(.*?)">', html_content).group()
+    
+    if not csrf_token or not meta_name:
+      print("[Error] parse html goes error! Please Check!")
+      sys.exit(1)
 
-    if csrf_token:
-      header_path = "/videos/get-download-url?videoId=%d&resolution=720" % vid 
-      #post_headers[":path"] = header_path
-      post_url = video_url_info % vid 
-      r = requests.post(post_url, data={'_csrf-frontend':csrf_token, 'domain': 'www.pornhd.com', '_jwt':'' }, headers=post_headers)
-      print("----------------------------------------------------------------------")
-      print(r.status_code)
-      print(r.headers)
-      print(r.text.encode('unicode_escape').decode('utf-8'))
-      print("----------------------------------------------------------------------")
-      if r.status_code == 200:
-        res_dict = json.loads(r.text)
-        if res_dict.get('status') == 'success':
-          video_download_url = res_dict.get('result') or None 
-          if video_download_url:
-            print(video_download_url)
-            sys.exit(0)
-          else:
-            print("[Error] result field is empty!")
-            sys.exit(1)
+    meta_list = meta_name.split('"')
+    print(meta_list)
+
+
+    header_path = "/videos/get-download-url?videoId=%d&resolution=720" % vid 
+    #post_headers[":path"] = header_path
+    post_url = video_url_info % vid 
+    r = requests.post(post_url, data={'_csrf-frontend':csrf_token, 'domain': 'www.pornhd.com', '_jwt':'' }, headers=post_headers)
+    print("----------------------------------------------------------------------")
+    print(r.status_code)
+    print(r.headers)
+    print(r.text.encode('unicode_escape').decode('utf-8'))
+    print("----------------------------------------------------------------------")
+    if r.status_code == 200:
+      res_dict = json.loads(r.text)
+      if res_dict.get('status') == 'success':
+        video_download_url = res_dict.get('result') or None 
+        if video_download_url:
+          print(video_download_url)
+          sys.exit(0)
         else:
-          print('[Error] status is not success!')
+          print("[Error] result field is empty!")
           sys.exit(1)
       else:
-        print('[Error] status code is not 200!')
+        print('[Error] status is not success!')
         sys.exit(1)
     else:
-      print('[Error] csrf_token get error!')
+      print('[Error] status code is not 200!')
       sys.exit(1)
+   
   else:
     print('[Error] vid is None!')
     sys.exit(1)
