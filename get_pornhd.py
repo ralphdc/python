@@ -67,7 +67,8 @@ def main():
       sys.exit(1)
 
     post_headers["referer"] = video_url
-    print(video_url)
+    video_name_list = video_url.split('/')
+    print(video_name_list)
     post_url = video_url_info % vid 
     r = requests.post(post_url, data={'_csrf-frontend':csrf_token, 'domain': 'www.pornhd.com', '_jwt':'' }, headers=post_headers)
    # print("----------------------------------------------------------------------")
