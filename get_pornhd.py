@@ -93,5 +93,6 @@ def main():
 if __name__ == '__main__':
   if len(sys.argv) != 2:
     print('[Error] params passwd error!')
+    sys.exit(1)
   main()
   
