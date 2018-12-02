@@ -93,9 +93,10 @@ def main():
           print("video_download_url: %s" % video_download_url)
           print("begin to download this video---------------------------------->")
 
+          f_name = "%s/%s" % (download_path, video_name)
+          print(f_name)
           request_video = requests.get(video_download_url, stream=True)
           length = float(request_video.headers['content-length'])
-          video_content = request_video.content 
           with open("%s/%s" % (download_path, video_name), 'wb') as f:
             count = 0
             count_tmp = 0
