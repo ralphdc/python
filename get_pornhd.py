@@ -48,6 +48,7 @@ def download_video(fpath, furl):
     for chunk in request_video.iter_content(chunk_size = 512):
       if chunk:
         f.write(chunk)
+        f.flush()
         count += len(chunk)
         if time.time() - time1 > 2:
           p = count / length * 100
