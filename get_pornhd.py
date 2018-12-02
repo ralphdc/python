@@ -67,21 +67,24 @@ def main():
       sys.exit(1)
 
     post_headers["referer"] = video_url
-    
+    print(video_url)
     post_url = video_url_info % vid 
     r = requests.post(post_url, data={'_csrf-frontend':csrf_token, 'domain': 'www.pornhd.com', '_jwt':'' }, headers=post_headers)
-    print("----------------------------------------------------------------------")
-    print(r.status_code)
-    print(r.headers)
-    print(r.text.encode('unicode_escape').decode('utf-8'))
-    print("----------------------------------------------------------------------")
+   # print("----------------------------------------------------------------------")
+   # print(r.status_code)
+   # print(r.headers)
+   # print(r.text.encode('unicode_escape').decode('utf-8'))
+   # print("----------------------------------------------------------------------")
     if r.status_code == 200:
       res_dict = json.loads(r.text)
       if res_dict.get('status') == 'success':
         video_download_url = res_dict.get('result') or None 
         if video_download_url:
-          print(video_download_url)
-          sys.exit(0)
+          print("video_url: %s" % video_url)
+          print("video_download_url: %s" % video_download_url)
+          print("begin to download this video---------------------------------->")
+          #with open("%s/%s" % (download_path, ))
+
         else:
           print("[Error] result field is empty!")
           sys.exit(1)
