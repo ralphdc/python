@@ -6,6 +6,7 @@ import sys
 import re 
 import json 
 import os 
+import time 
 
 page_url = "https://www.pornhd.com/videos"
 
@@ -93,11 +94,10 @@ def main():
           print("video_download_url: %s" % video_download_url)
           print("begin to download this video---------------------------------->")
 
-          f_name = "%s/%s" % (download_path, video_name)
-          print(f_name)
+          f_name = "%s/%s.mp4" % (download_path, video_name)
           request_video = requests.get(video_download_url, stream=True)
           length = float(request_video.headers['content-length'])
-          with open("%s/%s" % (download_path, video_name), 'wb') as f:
+          with open(f_name, 'wb') as f:
             count = 0
             count_tmp = 0
             time1 = time.time()
@@ -109,7 +109,7 @@ def main():
                   p = count / length * 100
                   speed = (count - count_tmp) / 1024 / 1024 / 2
                   count_tmp = count
-                  print(video_name + ': ' + formatFloat(p) + '%' + ' Speed: ' + formatFloat(speed) + 'M/S')
+                  print(f_name + ': ' + formatFloat(p) + '%' + ' Speed: ' + formatFloat(speed) + 'M/S')
                   time1 = time.time()
           print("------------------------------------->video download finished!")
         else:
