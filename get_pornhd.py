@@ -27,6 +27,11 @@ post_headers = {
 
 download_path = "/var/video/pornhd"
 
+
+def formatFloat(num):
+    return '{:.2f}'.format(num)
+
+
 def main():
   if not os.path.isdir(download_path):
     os.makedirs(download_path)
@@ -88,11 +93,24 @@ def main():
           print("video_download_url: %s" % video_download_url)
           print("begin to download this video---------------------------------->")
 
-          request_video = requests.get(video_download_url)
+          request_video = requests.get(video_download_url, stream=True)
+          length = float(request_video.headers['content-length'])
           video_content = request_video.content 
-          with open("%s/%s" % (download_path, video_name), 'wb') as v:
-            v.write(video_content)
-          print("video download finished!")
+          with open("%s/%s" % (download_path, video_name), 'wb') as f:
+            count = 0
+            count_tmp = 0
+            time1 = time.time()
+            for chunk in request_video.iter_content(chunk_size = 512):
+              if chunk:
+                f.write(chunk)
+                count += len(chunk)
+                if time.time() - time1 > 2:
+                  p = count / length * 100
+                  speed = (count - count_tmp) / 1024 / 1024 / 2
+                  count_tmp = count
+                  print(video_name + ': ' + formatFloat(p) + '%' + ' Speed: ' + formatFloat(speed) + 'M/S')
+                  time1 = time.time()
+          print("------------------------------------->video download finished!")
         else:
           print("[Error] result field is empty!")
           sys.exit(1)
