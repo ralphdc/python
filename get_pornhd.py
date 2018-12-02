@@ -67,8 +67,11 @@ def main():
       sys.exit(1)
 
     post_headers["referer"] = video_url
+
     video_name_list = video_url.split('/')
-    print(video_name_list)
+
+    video_name = video_name_list[-1]
+
     post_url = video_url_info % vid 
     r = requests.post(post_url, data={'_csrf-frontend':csrf_token, 'domain': 'www.pornhd.com', '_jwt':'' }, headers=post_headers)
    # print("----------------------------------------------------------------------")
@@ -84,8 +87,12 @@ def main():
           print("video_url: %s" % video_url)
           print("video_download_url: %s" % video_download_url)
           print("begin to download this video---------------------------------->")
-          #with open("%s/%s" % (download_path, ))
 
+          request_video = requests.get(video_download_url)
+          video_content = request_video.content 
+          with open("%s/%s" % (download_path, video_name), 'wb') as v:
+            v.write(video_content)
+          print("video download finished!")
         else:
           print("[Error] result field is empty!")
           sys.exit(1)
