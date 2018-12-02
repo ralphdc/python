@@ -55,11 +55,19 @@ def main():
       sys.exit(1)
 
     meta_list = meta_name.split('"')
-    print(meta_list)
+    if len(meta_list) < 3:
+      print(meta_name)
+      print("[Error] meta info parse error! Please check!")
+      sys.exit(1)
+    video_url = meta_list[3] or None 
 
+    if not video_url:
+      print(meta_list)
+      print("[Error] video_url cant be parsed from meta_list! Please check!")
+      sys.exit(1)
 
-    header_path = "/videos/get-download-url?videoId=%d&resolution=720" % vid 
-    #post_headers[":path"] = header_path
+    post_headers["referer"] = video_url
+    
     post_url = video_url_info % vid 
     r = requests.post(post_url, data={'_csrf-frontend':csrf_token, 'domain': 'www.pornhd.com', '_jwt':'' }, headers=post_headers)
     print("----------------------------------------------------------------------")
