@@ -17,7 +17,7 @@ CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
 CURRENT_PATH_LEVEL = "{}/{}".format(CURRENT_PATH, "/".join(CURRENT_PATH_LIST))
 
 if not os.path.isdir(CURRENT_PATH_LEVEL):
-	os.mkdir(CURRENT_PATH + '/' + '')
+	os.mkdirs(CURRENT_PATH + '/' + '')
 
 response = requests.get(BASE_URL)
 response.encoding = 'UTF-8'  
