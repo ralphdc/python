@@ -16,6 +16,16 @@ CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
 
 CURRENT_PATH_LEVEL = "{}/{}".format(CURRENT_PATH, "/".join(CURRENT_PATH_LIST))
 
+dirs = ''
+dir_split = ''
+for dir in CURRENT_PATH_LEVEL.split('/')
+	dirs += dir_split + dir
+	if not os.path.isdir(dirs):
+		os.makedir(dirs)
+	dir_split = '/'
+	
+	
+	
 if not os.path.isdir(CURRENT_PATH_LEVEL):
 	os.makedirs(CURRENT_PATH + '/' + '')
 
@@ -28,3 +38,9 @@ aTags = soup.find_all(class_="J_menuItem")
 for atag in aTags:
 	if ".html" in atag['href']:
 		print(atag['href'])
+		
+		
+		
+		
+if __name__ == '__main__':
+	main()
