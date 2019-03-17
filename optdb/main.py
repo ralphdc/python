@@ -9,6 +9,7 @@ def main(args):
 
 	city163 = App.get_unit('city163')
 	#city163.handle_province()
+	university = App.get_unit('university')
 
 	if args.operate == 'pro':
 		city163.handle_province()
@@ -22,6 +23,8 @@ def main(args):
 		city163.handle_guangdong_zone()
 	elif args.operate == 'parse':
 		city163.parse_data()
+	elif args.operate == 'university':
+		university.run()
 	else:
 		print("[Error] Parameter passed error!")
 

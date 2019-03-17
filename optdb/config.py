@@ -10,8 +10,6 @@ class Config():
 
 	LOG_APP_PATH = "d:/github/python/optdb/log/app.log"
 
-	def __init__(self):
-		pass 
-
+	UNIVERSITY_FILE = "d:/github/python/optdb/file/university.txt"
 
 	

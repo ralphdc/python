@@ -26,20 +26,20 @@ class City(Base):
 	__tablename__ = 'city'
 
 	city_id = Column(Integer, nullable=False, primary_key=True, unique=True, autoincrement=True)
-	city_province_code =  Column(String(1000))
+	city_province_code =  Column(String(1000), nullable=False)
 	city_name = Column(String(255), nullable=False, unique=True)
 	city_code = Column(String(255), nullable=False, unique=True)
 
 	def __init__(self, pcode, code, name):
 		self.city_province_code = pcode
 		self.city_name = name
-		self.city_code = code
+		self.code = code 
 
 class Zone(Base):
 	__tablename__ = 'zone'
 
 	zone_id = Column(Integer, nullable=False, primary_key=True, unique=True, autoincrement=True)
-	zone_city_code = Column(String(255))
+	zone_city_code = Column(String(255), nullable=False)
 	zone_code = Column(String(255), nullable=False, unique=True)
 	zone_name = Column(String(255), nullable=False, unique=True)
 
